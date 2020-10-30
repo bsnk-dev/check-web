@@ -14,8 +14,6 @@ export default {
       handler(value) {
         this.renderChart(value);
       },
-
-      deep: true,
     },
   },
 };

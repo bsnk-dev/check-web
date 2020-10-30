@@ -1,5 +1,5 @@
 export interface Alliance {
-  id: number;
+  id: string;
   name: string;
   alerts: {
     total: boolean;
@@ -35,10 +35,15 @@ export interface Dataset {
   label: string;
   data: Array<number>;
   borderColor: string;
-  filled?: boolean;
+  fill?: boolean;
 }
 
 export interface ChartData {
   labels: Array<string>;
   datasets: Array<Dataset>;
+}
+
+export interface Sphere {
+  name: string;
+  alliances: Array<Alliance>;
 }
