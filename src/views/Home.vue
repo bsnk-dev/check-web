@@ -1,6 +1,9 @@
 <template>
   <div class="main">
     <div>
+      <div class="grey lighten-3 rounded font-weight-bold text-center">
+        From {{ new Date(alliancesData.date).toLocaleString() }}
+      </div>
       <template v-for="(sphere, idx) in alliancesSorted">
         <div :key="idx * 2">
           <div class="text-h2 mt-5" > {{ sphere.name }} </div>

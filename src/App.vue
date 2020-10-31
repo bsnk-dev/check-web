@@ -3,6 +3,7 @@
     <v-app-bar
       app
       prominent
+      shrink-on-scroll
       fixed
       color="white"
     >
@@ -44,22 +45,46 @@
     </v-app-bar>
 
     <v-navigation-drawer
-        absolute
         temporary
         v-model="drawer"
+        fixed
       >
         <v-list
           dense
           rounded
+          two-line
         >
+         <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title> Check </v-list-item-title>
+              <v-list-item-subtitle> Version 0.9.0 </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-divider/>
           <v-list-item @click="$router.push({ name: 'Home' })">
+            <v-list-item-icon>
+              <v-icon>
+               mdi-view-dashboard
+              </v-icon>
+            </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title> Home </v-list-item-title>
+              <v-list-item-subtitle>
+                View Blocs & Their Stats
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
            <v-list-item @click="$router.push({ name: 'About' })">
+            <v-list-item-icon>
+              <v-icon>
+               mdi-information-outline
+              </v-icon>
+            </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title> About </v-list-item-title>
+              <v-list-item-subtitle>
+                Information
+              </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
