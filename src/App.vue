@@ -3,12 +3,15 @@
     <v-app-bar
       app
       prominent
+      fixed
       color="white"
     >
-      <v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = true">
       </v-app-bar-nav-icon>
 
-      <v-toolbar-title>All Blocs</v-toolbar-title>
+      <v-toolbar-title>
+        {{ $router.history.current.path === '/' ? 'All Blocs' : 'About' }}
+      </v-toolbar-title>
 
       <v-spacer/>
 
@@ -39,6 +42,28 @@
         </v-list>
       </v-menu>
     </v-app-bar>
+
+    <v-navigation-drawer
+        absolute
+        temporary
+        v-model="drawer"
+      >
+        <v-list
+          dense
+          rounded
+        >
+          <v-list-item @click="$router.push({ name: 'Home' })">
+            <v-list-item-content>
+              <v-list-item-title> Home </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+           <v-list-item @click="$router.push({ name: 'About' })">
+            <v-list-item-content>
+              <v-list-item-title> About </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
 
     <v-main>
       <router-view>
@@ -108,6 +133,7 @@ export default Vue.extend({
   data: () => ({
     helpDialog: false,
     feedbackDialog: false,
+    drawer: false,
   }),
 });
 </script>

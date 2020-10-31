@@ -15,12 +15,13 @@
       <v-text-field
         outlined
         v-model="feedbackID"
+        placeholder="Optional"
         label="Your Name or Identifier"
       ></v-text-field>
       <v-textarea
         outlined
         v-model="feedbackText"
-        label="What do you want to say?"
+        label="Request changes, report bugs, or anything else"
       ></v-textarea>
     </v-card-text>
     <v-card-actions>

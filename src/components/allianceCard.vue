@@ -1,7 +1,11 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-img max-width="100px" class="mr-3" :src="allianceData.flag">
+      <v-img
+        max-width="100px"
+        class="mr-3 rounded"
+        :src="allianceData.flag"
+      >
       </v-img>
       {{ allianceData.name }}
       <v-icon class="ml-5" color="red" v-if="allianceData.isPotentialHazard">

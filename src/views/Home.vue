@@ -79,9 +79,9 @@ export default Vue.extend({
 <style scoped>
   .main {
     margin-top: 20px;
-    margin-left: 50px;
-    margin-right: 50px;
-    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 97vw;
   }
 
   .alliance-cards-container {
