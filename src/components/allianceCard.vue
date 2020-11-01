@@ -1,8 +1,8 @@
 <template>
   <v-card>
-    <v-card-title>
+    <v-card-title class="text-md-subtitle-1 text-lg-h5 font-weight-bold">
       <v-img
-        max-width="100px"
+        max-width="60px"
         class="mr-3 rounded"
         :src="allianceData.flag"
       >
