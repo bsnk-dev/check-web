@@ -12,12 +12,15 @@
           mdi-alert-circle
       </v-icon>
     </v-card-title>
+    <v-card-subtitle class="font-weight-bold black--text mt-1">
+      {{ allianceData.sphere }}
+    </v-card-subtitle>
     <v-card-text>
       <line-chart :data="chartData"/>
       <v-divider class="mb-3 mt-3" />
       <div class="d-flex">
-        <div>
-          <div class="text-subtitle-1"> Overall </div>
+        <div class="d-flex flex-column">
+         <div class="text-subtitle-1"> Overall </div>
          <div>
             Soldiers:
             <span class="font-weight-bold">
@@ -71,30 +74,30 @@
             </v-icon>
           </div>
         </div>
-        <div class="ml-auto">
-          <div class="text-subtitle-1"> Per Member </div>
+        <div class="ml-auto d-flex flex-column">
+          <div class="text-subtitle-1"> Units </div>
           <div>
             Soldiers:
             <span class="font-weight-bold">
-              {{ (allianceData.soldiersPercentPM * 100).toFixed(2) }}%
+              {{ allianceData.soldiers.toLocaleString() }}
             </span>
           </div>
           <div>
             Tanks:
             <span class="font-weight-bold">
-              {{ (allianceData.tanksPercentPM * 100).toFixed(2) }}%
+              {{ allianceData.tanks.toLocaleString() }}
             </span>
           </div>
           <div>
             Aircraft:
             <span class="font-weight-bold">
-              {{ (allianceData.planesPercentPM * 100).toFixed(2) }}%
+              {{ allianceData.planes.toLocaleString() }}
             </span>
           </div>
           <div>
             Ships:
             <span class="font-weight-bold">
-              {{ (allianceData.shipsPercentPM * 100).toFixed(2) }}%
+              {{ allianceData.ships.toLocaleString() }}
             </span>
           </div>
           <div>
@@ -154,13 +157,13 @@ export default Vue.extend({
         datasets: [],
       };
 
-      for (let i = 1;
-        i < this.allianceData.allDataPoints.total.length + 1;
+      for (let i = 0;
+        i < Math.min(this.allianceData.allDataPoints.total.length + 1, 168);
         i++) {
-        if (i < 7) {
-          chartData.labels.push(`${i * 4} Hours Ago`);
-        } else if (i < 42) {
-          chartData.labels.push(`${((i * 4) / 24).toFixed(1)} Days Ago`);
+        if (i < 24) {
+          chartData.labels.push(`${i} Hours Ago`);
+        } else if (i < 167) {
+          chartData.labels.push(`${(i / 24).toFixed(1)} Days Ago`);
         } else {
           chartData.labels.push('One week ago');
         }

@@ -24,6 +24,7 @@ export interface Alliance {
   isPotentialHazard: boolean;
 
   allDataPoints: any;
+  sphere?: string;
 }
 
 export interface Database {

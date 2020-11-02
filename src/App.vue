@@ -10,11 +10,58 @@
       <v-app-bar-nav-icon @click="drawer = true">
       </v-app-bar-nav-icon>
 
-      <v-toolbar-title>
-        {{ $router.history.current.path === '/' ? 'All Blocs' : 'About' }}
+      <v-toolbar-title v-if="$route.name == 'About'">
+        About
       </v-toolbar-title>
 
+      <v-tabs
+        class="main-tabs"
+        v-if="$vuetify.breakpoint.name !== 'xs' && $route.name != 'About'"
+        v-model="tab"
+      >
+        <v-tab>
+          All Blocs
+        </v-tab>
+        <v-tab>
+          Other Alliances
+        </v-tab>
+         <v-tab v-if="searchString != ''">
+          Search Results
+        </v-tab>
+      </v-tabs>
+
+      <v-select
+        v-if="$vuetify.breakpoint.name === 'xs' && $route.name != 'About'"
+        v-model="tab"
+        item-text="name"
+        item-value="id"
+        class="mt-auto mb-n3"
+        :items="[{name: 'All Blocs', id: 0}, {name: 'Other Alliances', id: 1}]"
+      >
+      </v-select>
+
       <v-spacer/>
+
+      <v-slide-x-reverse-transition>
+        <v-text-field
+          solo
+          v-if="showSearch"
+          @change="searchString = $event; tab = 2"
+          dense
+          placeholder="Search"
+          class="mt-1 search"
+        >
+        </v-text-field>
+      </v-slide-x-reverse-transition>
+
+      <v-btn
+        icon
+        @click="showSearch = !showSearch"
+      >
+        <v-icon>
+          mdi-magnify
+        </v-icon>
+      </v-btn>
 
       <v-btn
         icon
@@ -91,7 +138,10 @@
     </v-navigation-drawer>
 
     <v-main>
-      <router-view>
+      <router-view
+        :mode="tab"
+        :searchString="searchString"
+      >
       </router-view>
     </v-main>
 
@@ -112,12 +162,7 @@
           <div class="text-h5 mb-5 black--text"> What is this? </div>
           This is a tool that allows you to see the total militarization of an
           alliance out of 100% maximum militatiztion, typically 5 barracks, 5
-          factories, 5 hangars, and 3 drydocks.
-          The militarization per member is the amount of militarization
-          divided by the number of members. This gives context to the
-          total militarization, as you might have 100% militarization but only
-          5 members.
-          It updates all data every four hours.
+          factories, 5 hangars, and 3 drydocks. It updates all data every hour.
 
           <div class="text-h5 mt-5 mb-5 black--text"> Warnings </div>
 
@@ -159,6 +204,9 @@ export default Vue.extend({
     helpDialog: false,
     feedbackDialog: false,
     drawer: false,
+    tab: 0,
+    showSearch: false,
+    searchString: '',
   }),
 });
 </script>
@@ -167,5 +215,15 @@ export default Vue.extend({
   .exit-button {
     top: 16px;
     right: 16px;
+  }
+
+  .main-tabs {
+    height: 52px !important;
+    margin-top: auto !important;
+  }
+
+  .search {
+    position: fixed;
+    right: 155px;
   }
 </style>

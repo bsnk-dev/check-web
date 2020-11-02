@@ -1,24 +1,68 @@
 <template>
-  <div class="main">
+  <div class="main pb-6">
     <div>
       <div class="grey lighten-3 rounded font-weight-bold text-center">
         From {{ new Date(alliancesData.date).toLocaleString() }}
       </div>
-      <template v-for="(sphere, idx) in alliancesSorted">
-        <div :key="idx * 2">
-          <div class="text-h2 mt-5" > {{ sphere.name }} </div>
-          <v-divider class="mb-3" />
+      <div v-show="mode == 0 && doneLoading">
+        <template v-for="(sphere, idx) in alliancesSorted">
+          <div :key="idx * 2">
+            <div class="text-h2 mt-5" > {{ sphere.name }} </div>
+            <v-divider class="mb-3" />
+          </div>
+          <div :key="idx * 2 + 1" class="alliance-cards-container">
+              <alliance-card
+                v-for="(alliance, idx) in sphere.alliances"
+                :key="idx"
+                :alliance-data="alliance"
+                class="alliance-card"
+                :class="$vuetify.breakpoint.name"
+              />
+          </div>
+        </template>
+      </div>
+      <div v-show="mode == 1 && doneLoading">
+        <div class="text-h2 mt-5" > Other </div>
+        <v-divider class="mb-3" />
+        <div class="alliance-cards-container">
+            <alliance-card
+              v-for="(alliance, idx) in
+                otherAlliances.slice((page - 1) * 20, (page * 20))"
+
+              :key="idx"
+              :alliance-data="alliance"
+              class="alliance-card"
+              :class="$vuetify.breakpoint.name"
+            />
         </div>
-        <div :key="idx * 2 + 1" class="alliance-cards-container">
-          <alliance-card
-            v-for="(alliance, idx) in sphere.alliances"
-            :key="idx"
-            :alliance-data="alliance"
-            class="alliance-card"
-            :class="$vuetify.breakpoint.name"
-          />
+        <div class="text-center">
+          <v-pagination
+            v-model="page"
+            :length="Math.ceil(otherAlliances.length / 20)"
+          ></v-pagination>
         </div>
-      </template>
+      </div>
+      <div v-show="mode == 2">
+        <div class="text-h2 mt-5" > Search Results </div>
+        <v-divider class="mb-3" />
+        <div class="alliance-cards-container">
+            <alliance-card
+              v-for="(alliance, idx) in
+              filteredAlliances.slice((searchPage -1 ) * 20, (searchPage * 20))"
+
+              :key="idx"
+              :alliance-data="alliance"
+              class="alliance-card"
+              :class="$vuetify.breakpoint.name"
+            />
+        </div>
+        <div class="text-center">
+          <v-pagination
+            v-model="page"
+            :length="Math.ceil(filteredAlliances.length / 20)"
+          ></v-pagination>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,10 +70,16 @@
 <script lang="ts">
 import Vue from 'vue';
 import allianceCard from '@/components/allianceCard.vue';
-import {Database, Sphere} from '@/common/types';
+import {Database, Sphere, Alliance} from '@/common/types';
+import Fuse from 'fuse.js';
 
 export default Vue.extend({
   name: 'Viewer',
+
+  props: {
+    mode: Number,
+    searchString: String,
+  },
 
   components: {
     allianceCard,
@@ -38,18 +88,25 @@ export default Vue.extend({
   data: () => ({
     alliancesData: {} as Database,
     alliancesSorted: [] as Array<Sphere>,
+    otherAlliances: [] as Alliance[],
+    filteredAlliances: [] as Alliance[],
+    page: 1,
+    searchPage: 1,
+    doneLoading: false,
+    fuse: {} as Fuse<Alliance>,
   }),
 
   async mounted() {
     this.alliancesData = await (await fetch('/db.json')).json();
     const spheres = await (await fetch('/spheres.json')).json();
 
+    setTimeout(() => this.doneLoading = true, 100);
+
     const alliancesSorted: Array<Sphere> = [];
     let sphere;
     for (sphere of spheres) {
       alliancesSorted.push({name: sphere.name, alliances: []});
     }
-    alliancesSorted.push({name: 'Other', alliances: []});
 
     let alliance;
     for (alliance of this.alliancesData.alliances) {
@@ -63,6 +120,7 @@ export default Vue.extend({
           let findSortedSphere;
           for (findSortedSphere of alliancesSorted) {
             if (findSortedSphere.name === sphere.name) {
+              alliance.sphere = sphere.name;
               findSortedSphere.alliances.push(alliance);
             }
           }
@@ -70,11 +128,31 @@ export default Vue.extend({
       }
 
       if (!inSpecificSphere) {
-        alliancesSorted[alliancesSorted.length - 1].alliances.push(alliance);
+        alliance.sphere = 'Other';
+        this.otherAlliances.push(alliance);
       }
     }
 
     this.alliancesSorted = alliancesSorted;
+
+    this.filteredAlliances = this.alliancesData.alliances;
+    this.fuse = new Fuse(this.alliancesData.alliances, {
+      keys: ['name', 'id'],
+    });
+  },
+
+  watch: {
+    searchString(value) {
+      if (value != '') {
+        const results = this.fuse.search(value);
+        this.filteredAlliances = [];
+
+        let result;
+        for (result of results) {
+          this.filteredAlliances.push(result.item);
+        }
+      } else this.filteredAlliances = this.alliancesData.alliances;
+    },
   },
 });
 </script>
@@ -111,11 +189,15 @@ export default Vue.extend({
     width: 30vw;
   }
 
-  .alliance-card-lg {
+  .alliance-card.lg {
+    width: 26vw;
+  }
+
+  .alliance-card.xl {
     width: 23vw;
   }
 
-  .alliance-card-xl {
-    width: 23vw;
+  .max {
+    width: 97vw;
   }
 </style>

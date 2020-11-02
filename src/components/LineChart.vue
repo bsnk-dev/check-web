@@ -29,6 +29,7 @@ export default {
               padding: 5,
             },
           },
+          responsive: true,
         });
       },
     },
