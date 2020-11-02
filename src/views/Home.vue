@@ -151,7 +151,7 @@ export default Vue.extend({
         for (result of results) {
           this.filteredAlliances.push(result.item);
         }
-      } else this.filteredAlliances = this.alliancesData.alliances;
+      }
     },
   },
 });

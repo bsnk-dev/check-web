@@ -36,7 +36,9 @@
         item-text="name"
         item-value="id"
         class="mt-auto mb-n3"
-        :items="[{name: 'All Blocs', id: 0}, {name: 'Other Alliances', id: 1}]"
+        :items="[{name: 'All Blocs', id: 0},
+                 {name: 'Other Alliances', id: 1},
+                 {name: 'Search Results', id: 2}]"
       >
       </v-select>
 
