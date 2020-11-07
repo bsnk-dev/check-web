@@ -27,7 +27,7 @@
     <v-card-actions>
       <v-spacer/>
       <v-btn
-        class="mt-2 mb-4 mr-4"
+        class="mt-2"
         depressed
         color="primary"
         @click="send(); $emit('close')"
@@ -61,7 +61,7 @@ export default Vue.extend({
 
 <style scoped>
   .exit-button {
-    top: 16px;
-    right: 16px;
+    top: 8px;
+    right: 8px;
   }
 </style>

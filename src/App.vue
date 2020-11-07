@@ -36,9 +36,7 @@
         item-text="name"
         item-value="id"
         class="mt-auto mb-n3"
-        :items="[{name: 'All Blocs', id: 0},
-                 {name: 'Other Alliances', id: 1},
-                 {name: 'Search Results', id: 2}]"
+        :items="searchString == '' ? noSearchTabsSelect : searchTabsSelect"
       >
       </v-select>
 
@@ -174,7 +172,6 @@
         <v-card-actions>
           <v-spacer/>
           <v-btn
-            class="mt-2 mb-4 mr-4"
             depressed
             color="primary"
             @click="helpDialog = false"
@@ -209,14 +206,21 @@ export default Vue.extend({
     tab: 0,
     showSearch: false,
     searchString: '',
+
+    searchTabsSelect: [{name: 'All Blocs', id: 0},
+      {name: 'Other Alliances', id: 1},
+      {name: 'Search Results', id: 2}],
+
+    noSearchTabsSelect: [{name: 'All Blocs', id: 0},
+      {name: 'Other Alliances', id: 1}],
   }),
 });
 </script>
 
 <style scoped>
   .exit-button {
-    top: 16px;
-    right: 16px;
+    top: 8px;
+    right: 8px;
   }
 
   .main-tabs {

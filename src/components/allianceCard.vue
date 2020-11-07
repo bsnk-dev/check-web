@@ -1,13 +1,17 @@
 <template>
   <v-card>
-    <v-card-title class="text-md-subtitle-1 text-lg-h5 font-weight-bold">
+    <v-card-title
+      class="text-md-subtitle-1 text-lg-h5 text-h6 font-weight-bold"
+    >
       <v-img
         max-width="60px"
         class="mr-3 rounded"
         :src="allianceData.flag"
       >
       </v-img>
-      {{ allianceData.name }}
+      <a :href="`https://politicsandwar.com/alliance/id=${allianceData.id}`">
+        {{ allianceData.name }}
+      </a>
       <v-icon class="ml-5" color="red" v-if="allianceData.isPotentialHazard">
           mdi-alert-circle
       </v-icon>
