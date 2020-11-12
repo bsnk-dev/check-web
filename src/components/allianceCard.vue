@@ -162,7 +162,7 @@ export default Vue.extend({
       };
 
       for (let i = 0;
-        i < this.allianceData.allDataPoints.total.length + 1;
+        i < this.allianceData.allDataPoints.total.length;
         i++) {
         if (i < 24) {
           chartData.labels.push(`${i} Hours Ago`);
