@@ -164,10 +164,10 @@ export default Vue.extend({
       for (let i = 0;
         i < this.allianceData.allDataPoints.total.length;
         i++) {
-        if (i < 24) {
-          chartData.labels.push(`${i} Hours Ago`);
-        } else if (i < 168) {
-          chartData.labels.push(`${(i / 24).toFixed(1)} Days Ago`);
+        if (i < 12) {
+          chartData.labels.push(`${i * 2} Hours Ago`);
+        } else if (i < 84) {
+          chartData.labels.push(`${(i / 12).toFixed(1)} Days Ago`);
         } else {
           chartData.labels.push('One week ago');
         }

@@ -64,6 +64,24 @@
         </div>
       </div>
     </div>
+    <v-snackbar
+      v-model="problemSnackbar"
+      multi-line
+      :timeout="-1"
+    >
+      Check has been experiencing problems.
+      Expect 2 hour delays between data gathering until fixed.
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="red"
+          text
+          v-bind="attrs"
+          @click="problemSnackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
@@ -94,6 +112,7 @@ export default Vue.extend({
     searchPage: 1,
     doneLoading: false,
     fuse: {} as Fuse<Alliance>,
+    problemSnackbar: true,
   }),
 
   async mounted() {
