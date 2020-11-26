@@ -69,8 +69,8 @@
       multi-line
       :timeout="-1"
     >
-      Check has been experiencing problems.
-      Expect 2 hour delays between data gathering until fixed.
+      Check has been experiencing problems,
+      wait for data to repopulate to get one week of stats.
       <template v-slot:action="{ attrs }">
         <v-btn
           color="red"
