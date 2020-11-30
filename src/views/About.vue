@@ -10,7 +10,7 @@
       <v-card-text>
         Made for Politics & War.
         bsnk.dev has no affiliation with Politics & War.
-        Politics & War is a trademark of Politics & War; All Rights Reserved.
+        Politics & War is a trademark of Yellowstone Digital Media LLC; All Rights Reserved.
       </v-card-text>
     </v-card>
   </div>
