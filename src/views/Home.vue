@@ -112,7 +112,7 @@ export default Vue.extend({
     searchPage: 1,
     doneLoading: false,
     fuse: {} as Fuse<Alliance>,
-    problemSnackbar: true,
+    problemSnackbar: false,
   }),
 
   async mounted() {
