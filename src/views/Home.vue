@@ -58,7 +58,7 @@
         </div>
         <div class="text-center">
           <v-pagination
-            v-model="page"
+            v-model="searchPage"
             :length="Math.ceil(filteredAlliances.length / 20)"
           ></v-pagination>
         </div>
@@ -139,7 +139,12 @@ export default Vue.extend({
           let findSortedSphere;
           for (findSortedSphere of alliancesSorted) {
             if (findSortedSphere.name === sphere.name) {
-              alliance.sphere = sphere.name;
+              if (alliance.sphere) {
+                alliance.sphere += ' and ' + sphere.name;
+              } else {
+                alliance.sphere = sphere.name;
+              }
+
               findSortedSphere.alliances.push(alliance);
             }
           }
