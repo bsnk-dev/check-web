@@ -90,6 +90,7 @@ import Vue from 'vue';
 import allianceCard from '@/components/allianceCard.vue';
 import {Database, Sphere, Alliance} from '@/common/types';
 import Fuse from 'fuse.js';
+import store from '@/store';
 
 export default Vue.extend({
   name: 'Viewer',
@@ -116,8 +117,8 @@ export default Vue.extend({
   }),
 
   async mounted() {
-    this.alliancesData = await (await fetch('/db.json')).json();
-    const spheres = await (await fetch('/spheres.json')).json();
+    const spheres = store.spheres;
+    this.alliancesData = store.alliancesData;
 
     setTimeout(() => this.doneLoading = true, 100);
 
@@ -218,7 +219,7 @@ export default Vue.extend({
   }
 
   .alliance-card.xl {
-    width: 23vw;
+    width: 19vw;
   }
 
   .max {

@@ -14,9 +14,13 @@
         About
       </v-toolbar-title>
 
+      <v-toolbar-title v-else-if="$route.name == 'Spheres'">
+        Spheres
+      </v-toolbar-title>
+
       <v-tabs
         class="main-tabs"
-        v-if="$vuetify.breakpoint.name !== 'xs' && $route.name != 'About'"
+        v-if="$vuetify.breakpoint.name !== 'xs' && $route.name != 'About' && $route.name != 'Spheres'"
         v-model="tab"
       >
         <v-tab>
@@ -191,6 +195,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import Feedback from '@/components/feedback.vue';
+import store from './store';
 
 export default Vue.extend({
   name: 'App',
@@ -214,6 +219,11 @@ export default Vue.extend({
     noSearchTabsSelect: [{name: 'All Blocs', id: 0},
       {name: 'Other Alliances', id: 1}],
   }),
+
+  async mounted() {
+    store.alliancesData = await (await fetch('/db.json')).json();
+    store.spheres = await (await fetch('/spheres.json')).json();
+  },
 });
 </script>
 

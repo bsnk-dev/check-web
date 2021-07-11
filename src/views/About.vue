@@ -5,7 +5,7 @@
         Check
       </v-card-title>
       <v-card-subtitle>
-        Check &copy; Copyright bsnk.dev 2020. All Rights Reserved.
+        Check &copy; Copyright bsnk.dev 2020-2021. All Rights Reserved.
       </v-card-subtitle>
       <v-card-text>
         Made for Politics & War.

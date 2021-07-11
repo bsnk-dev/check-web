@@ -16,6 +16,11 @@ const routes: Array<RouteConfig> = [
     name: 'About',
     component: About,
   },
+  {
+    path: '/spheres',
+    name: 'Spheres',
+    component: () => import('../views/SphereAnalyzation.vue'),
+  },
 ];
 
 const router = new VueRouter({

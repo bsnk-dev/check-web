@@ -23,7 +23,19 @@ export interface Alliance {
   shipsPercentPM: number;
   isPotentialHazard: boolean;
 
-  allDataPoints: any;
+  soldiers: number;
+  tanks: number;
+  planes: number;
+  ships: number;
+
+  allDataPoints: {
+    [key: string]: any;
+    total: number[];
+    soldiers: number[];
+    tanks: number[];
+    planes: number[];
+    ships: number[];
+  };
   sphere?: string;
 }
 
