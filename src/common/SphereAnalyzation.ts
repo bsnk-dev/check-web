@@ -8,6 +8,8 @@ export interface SphereStatistics {
   aircraft: number;
   ships: number;
 
+  totalScore: number;
+
   militarization: Militarization;
 
   includedAlliances: Alliance[];

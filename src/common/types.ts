@@ -23,6 +23,8 @@ export interface Alliance {
   shipsPercentPM: number;
   isPotentialHazard: boolean;
 
+  score: number;
+
   soldiers: number;
   tanks: number;
   planes: number;
@@ -59,4 +61,9 @@ export interface ChartData {
 export interface Sphere {
   name: string;
   alliances: Array<Alliance>;
+}
+
+export interface SphereConfiguration {
+  name: string;
+  alliances: Array<number>;
 }

@@ -144,6 +144,7 @@
     <v-main>
       <router-view
         :mode="tab"
+        v-if="loaded"
         :searchString="searchString"
       >
       </router-view>
@@ -211,6 +212,7 @@ export default Vue.extend({
     tab: 0,
     showSearch: false,
     searchString: '',
+    loaded: false,
 
     searchTabsSelect: [{name: 'All Blocs', id: 0},
       {name: 'Other Alliances', id: 1},
@@ -223,6 +225,8 @@ export default Vue.extend({
   async mounted() {
     store.alliancesData = await (await fetch('/db.json')).json();
     store.spheres = await (await fetch('/spheres.json')).json();
+
+    this.loaded = true;
   },
 });
 </script>
