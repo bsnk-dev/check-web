@@ -1,8 +1,8 @@
+import {Nation} from './common/Nations';
 import {Database, SphereConfiguration} from './common/types';
 
 export default {
-  cachedNodes: [] as any[],
-  cachedEdges: [] as any[],
   alliancesData: {} as Database,
   spheres: {} as SphereConfiguration[],
+  cachedNations: [] as Nation[],
 };

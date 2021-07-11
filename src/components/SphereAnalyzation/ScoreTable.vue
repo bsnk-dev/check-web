@@ -48,7 +48,7 @@
             <template v-slot:item.totalScore="{ value }">
               {{ value.toLocaleString() }}
             </template>
-            <template v-slot:item.totalScore="{ value }">
+            <template v-slot:item.score="{ value }">
               {{ value.toLocaleString() }}
             </template>
           </v-data-table>

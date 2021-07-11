@@ -1,0 +1,80 @@
+<template>
+  <v-card height="500px" outlined class="pa-4">
+    <bar-chart :data="chartData" v-if="loaded"></bar-chart>
+  </v-card>
+</template>
+
+<script lang="ts">
+import {SphereStatistics} from '@/common/SphereAnalyzation';
+import {ChartData, Dataset} from '@/common/VueChartJSData';
+import store from '@/store';
+import {Component, Vue, Prop} from 'vue-property-decorator';
+import BarChart from '@/components/GraphWrappers/BarChart.vue';
+
+@Component({
+  components: {
+    BarChart,
+  },
+})
+export default class CityTierGraph extends Vue {
+  chartData = new ChartData();
+  loaded = false;
+
+  @Prop(Array) spheres!: SphereStatistics[];
+
+  getNationsByAllianceID(allianceID: string) {
+    const nations = [];
+
+    for (const nation of store.cachedNations) {
+      if (nation.id == allianceID) nations.push(nation);
+    }
+
+    return nations;
+  }
+
+  updateMaxCities(maxCities: number, valueToCheck: number) {
+    return (valueToCheck > maxCities) ? valueToCheck : maxCities;
+  }
+
+  generateChartData() {
+    const cityTierIncrement = 6;
+    let maxCities = 0;
+
+    for (const nation of store.cachedNations) maxCities = this.updateMaxCities(maxCities, nation.num_cities);
+
+    for (let i = 0; i < (maxCities / 6); i++) this.chartData.labels.push(`${(i * 6) + 1}-${(i + 1) * 6} Cities`);
+
+    for (const sphere of this.spheres) {
+      const data = new Dataset();
+
+      data.label = sphere.name;
+
+      for (const alliance of sphere.includedAlliances) {
+        const allianceNations = this.getNationsByAllianceID(alliance.id);
+
+        for (let i = 0; i < (maxCities / 6); i++) {
+          let citiesInTier = 0;
+
+          for (const nation of allianceNations) {
+            if (
+              nation.num_cities > (i * cityTierIncrement) &&
+              nation.num_cities < ((i + 1) * cityTierIncrement)
+            ) {
+              citiesInTier++;
+            }
+          }
+
+          // data.data.push(citiesInTier);
+        }
+      }
+
+      this.chartData.datasets.push(data);
+    }
+  }
+
+  mounted() {
+    this.generateChartData();
+    this.loaded = true;
+  }
+}
+</script>

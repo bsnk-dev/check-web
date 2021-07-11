@@ -10,7 +10,12 @@
         </v-col>
       </v-row>
       <v-row>
-
+        <v-col>
+          <militarization-over-time :spheres="spheres" v-if="loaded"></militarization-over-time>
+        </v-col>
+        <v-col>
+          <city-tier-graph :spheres="spheres" v-if="loaded"></city-tier-graph>
+        </v-col>
       </v-row>
     </v-container>
   </div>
@@ -23,11 +28,15 @@ import {MilitarizationMap, SphereStatistics} from '../common/SphereAnalyzation';
 
 import MilitarizationPie from '../components/SphereAnalyzation/MilitarizationPie.vue';
 import ScoreTable from '../components/SphereAnalyzation/ScoreTable.vue';
+import MilitarizationOverTime from '@/components/SphereAnalyzation/MilitarizationOverTime.vue';
+import CityTierGraph from '@/components/SphereAnalyzation/CityTiers.vue';
 
 @Component({
   components: {
     MilitarizationPie,
     ScoreTable,
+    MilitarizationOverTime,
+    CityTierGraph,
   },
 })
 export default class SphereAnalyzationGraphs extends Vue {
@@ -105,12 +114,29 @@ export default class SphereAnalyzationGraphs extends Vue {
 
       this.spheres.push(stats as SphereStatistics);
     }
-
-    this.loaded = true;
   }
 
-  mounted() {
+  async mounted() {
+    const allAlliances: number[] = [];
+    for (const sphere of store.spheres) {
+      allAlliances.push(...sphere.alliances);
+    }
+
+    if (!store.cachedNations.length) {
+      const nations = await (await fetch(`https://untitled-fv6p52y7540t.runkit.sh/nations?allianceID=[${allAlliances.join(',')}]`)).json();
+      store.cachedNations.push(...nations.data);
+
+      if (nations.paginatorInfo) {
+        for (let i = 1; i < nations.paginatorInfo.lastPage + 1; i++) {
+          const nations = await (await fetch(`https://untitled-fv6p52y7540t.runkit.sh/nations?allianceID=[${allAlliances.join(',')}]&page=${i}`)).json();
+          store.cachedNations.push(...nations.data);
+        }
+      }
+    }
+
     this.generateSphereData();
+
+    this.loaded = true;
   }
 }
 </script>
