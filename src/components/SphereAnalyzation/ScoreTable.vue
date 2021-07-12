@@ -31,7 +31,6 @@
             :headers="(mode == '0') ? sphereHeaders : allianceHeaders"
             dense
             :items-per-page="8"
-            :footer-props="{'disable-items-per-page': true}"
           >
             <template v-slot:item.soldiers="{ value }">
               {{ value.toLocaleString() }}
@@ -42,10 +41,16 @@
             <template v-slot:item.aircraft="{ value }">
               {{ value.toLocaleString() }}
             </template>
+            <template v-slot:item.planes="{ value }">
+              {{ value.toLocaleString() }}
+            </template>
             <template v-slot:item.ships="{ value }">
               {{ value.toLocaleString() }}
             </template>
             <template v-slot:item.totalScore="{ value }">
+              {{ value.toLocaleString() }}
+            </template>
+            <template v-slot:item.nationCount="{ value }">
               {{ value.toLocaleString() }}
             </template>
             <template v-slot:item.score="{ value }">
@@ -100,6 +105,10 @@ export default class ScoreTable extends Vue {
       value: 'ships',
     },
     {
+      text: 'Nations',
+      value: 'nationCount',
+    },
+    {
       text: 'Score',
       value: 'totalScore',
     },
@@ -125,6 +134,10 @@ export default class ScoreTable extends Vue {
     {
       text: 'Ships',
       value: 'ships',
+    },
+    {
+      text: 'Nations',
+      value: 'totalMembers',
     },
     {
       text: 'Score',

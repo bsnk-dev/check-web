@@ -9,6 +9,7 @@ export interface SphereStatistics {
   ships: number;
 
   totalScore: number;
+  nationCount: number;
 
   militarization: Militarization;
 

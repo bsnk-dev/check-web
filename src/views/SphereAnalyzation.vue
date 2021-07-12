@@ -73,6 +73,7 @@ export default class SphereAnalyzationGraphs extends Vue {
       stats.tanks =
       stats.aircraft =
       stats.ships =
+      stats.nationCount =
       stats.totalScore = 0;
 
       stats.militarization = {
@@ -108,6 +109,7 @@ export default class SphereAnalyzationGraphs extends Vue {
         stats.aircraft += alliance.planes;
         stats.ships += alliance.ships;
         stats.totalScore += alliance.score;
+        stats.nationCount += alliance.totalMembers;
       }
 
       for (const key of Object.keys(stats.militarization)) {
