@@ -63,7 +63,8 @@ export default class CityTierGraph extends Vue {
           for (const nation of allianceNations) {
             if (
               nation.num_cities > (i * cityTierIncrement) &&
-              nation.num_cities < ((i + 1) * cityTierIncrement)
+              nation.num_cities < ((i + 1) * cityTierIncrement) &&
+              nation.alliance_position != 'APPLICANT'
             ) {
               citiesInTier++;
             }

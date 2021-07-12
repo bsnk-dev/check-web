@@ -1,21 +1,31 @@
 <template>
-  <div class="main">
-    <v-container>
-      <v-row>
+  <div class="main fill-height">
+    <v-container class="fill-height">
+      <v-row v-if="loaded">
         <v-col>
-          <militarization-pie :spheres="spheres" :timeIndex="1" v-if="loaded"></militarization-pie>
+          <militarization-pie :spheres="spheres" :timeIndex="1" ></militarization-pie>
         </v-col>
         <v-col>
-          <score-table :spheres="spheres" :timeIndex="1" v-if="loaded" />
+          <score-table :spheres="spheres" :timeIndex="1"  />
         </v-col>
       </v-row>
-      <v-row>
+      <v-row v-if="loaded">
         <v-col>
-          <militarization-over-time :spheres="spheres" v-if="loaded"></militarization-over-time>
+          <militarization-over-time :spheres="spheres" ></militarization-over-time>
         </v-col>
         <v-col>
-          <city-tier-graph :spheres="spheres" v-if="loaded"></city-tier-graph>
+          <city-tier-graph :spheres="spheres" ></city-tier-graph>
         </v-col>
+      </v-row>
+
+      <v-row v-else>
+        <v-progress-circular
+          :size="60"
+          :width="5"
+          color="primary"
+          class="ma-auto mt-n16"
+          indeterminate
+        ></v-progress-circular>
       </v-row>
     </v-container>
   </div>

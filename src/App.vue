@@ -20,7 +20,7 @@
 
       <v-tabs
         class="main-tabs"
-        v-if="$vuetify.breakpoint.name !== 'xs' && $route.name != 'About' && $route.name != 'Spheres'"
+        v-if="$vuetify.breakpoint.name !== 'xs' && $route.name == 'Home' && $route.name != 'Spheres'"
         v-model="tab"
       >
         <v-tab>
@@ -35,7 +35,7 @@
       </v-tabs>
 
       <v-select
-        v-if="$vuetify.breakpoint.name === 'xs' && $route.name != 'About'"
+        v-if="$vuetify.breakpoint.name === 'xs' && $route.name == 'Home'"
         v-model="tab"
         item-text="name"
         item-value="id"

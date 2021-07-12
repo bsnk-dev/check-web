@@ -24,13 +24,13 @@
     <v-row>
       <v-col>
         <div
-          style="height: 400px; overflow: hidden"
+          style="height: 350px; overflow-x: auto"
         >
           <v-data-table
             :items="(mode == '0') ? spheres : allAlliances"
             :headers="(mode == '0') ? sphereHeaders : allianceHeaders"
             dense
-            :items-per-page="10"
+            :items-per-page="8"
             :footer-props="{'disable-items-per-page': true}"
           >
             <template v-slot:item.soldiers="{ value }">
