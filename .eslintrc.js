@@ -17,5 +17,6 @@ module.exports = {
     'max-len': 'off',
     'require-jsdoc': 'off',
     'new-cap': 'off',
+    'vue/valid-v-slot': 'off',
   },
 };

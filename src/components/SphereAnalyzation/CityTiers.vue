@@ -1,12 +1,13 @@
 <template>
   <v-card height="500px" outlined class="pa-4">
+    <h2 class="text-center">Nations in Each City Tier</h2>
     <bar-chart :data="chartData" v-if="loaded"></bar-chart>
   </v-card>
 </template>
 
 <script lang="ts">
 import {SphereStatistics} from '@/common/SphereAnalyzation';
-import {ChartData, Dataset} from '@/common/VueChartJSData';
+import {ChartData, color, Dataset} from '@/common/VueChartJSData';
 import store from '@/store';
 import {Component, Vue, Prop} from 'vue-property-decorator';
 import BarChart from '@/components/GraphWrappers/BarChart.vue';
@@ -26,7 +27,7 @@ export default class CityTierGraph extends Vue {
     const nations = [];
 
     for (const nation of store.cachedNations) {
-      if (nation.id == allianceID) nations.push(nation);
+      if (nation.alliance_id == allianceID) nations.push(nation);
     }
 
     return nations;
@@ -42,17 +43,21 @@ export default class CityTierGraph extends Vue {
 
     for (const nation of store.cachedNations) maxCities = this.updateMaxCities(maxCities, nation.num_cities);
 
-    for (let i = 0; i < (maxCities / 6); i++) this.chartData.labels.push(`${(i * 6) + 1}-${(i + 1) * 6} Cities`);
+    for (let i = 0; i < (maxCities / cityTierIncrement); i++) this.chartData.labels.push(`${(i * 6) + 1}-${(i + 1) * 6} Cities`);
 
-    for (const sphere of this.spheres) {
+    for (const [index, sphere] of this.spheres.entries()) {
       const data = new Dataset();
-
+      data.backgroundColor = color[index];
+      data.borderColor = color[index];
       data.label = sphere.name;
 
-      for (const alliance of sphere.includedAlliances) {
-        const allianceNations = this.getNationsByAllianceID(alliance.id);
+      const tiers = [];
+      for (let i = 0; i < (maxCities / cityTierIncrement); i++) tiers.push(0);
 
-        for (let i = 0; i < (maxCities / 6); i++) {
+      for (const alliance of sphere.includedAlliances) {
+        const allianceNations = this.getNationsByAllianceID(alliance.id.toString());
+
+        for (let i = 0; i < (maxCities / cityTierIncrement); i++) {
           let citiesInTier = 0;
 
           for (const nation of allianceNations) {
@@ -64,9 +69,11 @@ export default class CityTierGraph extends Vue {
             }
           }
 
-          // data.data.push(citiesInTier);
+          tiers[i] += citiesInTier;
         }
       }
+
+      data.data = tiers;
 
       this.chartData.datasets.push(data);
     }

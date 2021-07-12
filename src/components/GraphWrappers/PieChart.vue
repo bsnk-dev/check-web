@@ -1,12 +1,14 @@
 <script>
-import {Pie} from 'vue-chartjs';
+import {Pie, mixins} from 'vue-chartjs';
+const {reactiveProp} = mixins;
 
 export default {
   name: 'pie-chart',
   extends: Pie,
+  mixins: [reactiveProp],
 
   props: {
-    data: Object,
+    chartData: Object,
     hideTicks: {
       type: Boolean,
       default: false,
@@ -16,7 +18,7 @@ export default {
   watch: {
     data: {
       handler(value) {
-        this.renderWrapper(value);
+        this.$data._chart.update(value);
       },
 
       deep: true,
@@ -25,7 +27,7 @@ export default {
 
   methods: {
     renderWrapper(value) {
-      this.renderChart(value || this.data, {
+      this.renderChart(value || this.chartData, {
         legend: {
           display: true,
           labels: {
@@ -41,7 +43,7 @@ export default {
   },
 
   mounted() {
-    this.renderWrapper();
+    this.renderWrapper(this.chartData);
   },
 };
 </script>

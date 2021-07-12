@@ -126,11 +126,19 @@ export default class SphereAnalyzationGraphs extends Vue {
       const nations = await (await fetch(`https://untitled-fv6p52y7540t.runkit.sh/nations?allianceID=[${allAlliances.join(',')}]`)).json();
       store.cachedNations.push(...nations.data);
 
+      const fetchedData: Promise<Response>[] = [];
+
       if (nations.paginatorInfo) {
-        for (let i = 1; i < nations.paginatorInfo.lastPage + 1; i++) {
-          const nations = await (await fetch(`https://untitled-fv6p52y7540t.runkit.sh/nations?allianceID=[${allAlliances.join(',')}]&page=${i}`)).json();
-          store.cachedNations.push(...nations.data);
+        for (let i = 2; i < nations.paginatorInfo.lastPage + 1; i++) {
+          fetchedData.push(fetch(`https://untitled-fv6p52y7540t.runkit.sh/nations?allianceID=[${allAlliances.join(',')}]&page=${i}`));
         }
+      }
+
+      const responses = await Promise.all(fetchedData);
+
+      for (const response of responses) {
+        const nations = await response.json();
+        store.cachedNations.push(...nations.data);
       }
     }
 

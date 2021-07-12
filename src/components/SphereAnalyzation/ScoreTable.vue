@@ -7,7 +7,7 @@
     <v-row class="align-center">
       <v-col
         cols="12"
-        sm="6"
+        sm="7"
       >
         <segmented-control
           v-model="mode"

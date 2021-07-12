@@ -28,7 +28,7 @@ export interface Dataset {
   label: string;
   data: (number | string | {x: string | number; y: string | number})[];
   lineTension: number;
-  borderColor: string;
+  borderColor: (string | string[]);
   backgroundColor: (string | string[]);
   fill: boolean;
   pointHitRadius: number;
@@ -39,6 +39,8 @@ export class Dataset implements Dataset {
   label = '';
   data: (number | string | {x: string | number; y: string | number})[] = [];
   lineTension = 0;
+  // eslint-disable-next-line
+  // @ts-ignore
   borderColor = color[0];
   // eslint-disable-next-line
   // @ts-ignore
