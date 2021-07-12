@@ -61,6 +61,7 @@
       <v-btn
         icon
         @click="showSearch = !showSearch"
+        v-if="$route.name == 'Home'"
       >
         <v-icon>
           mdi-magnify
@@ -72,7 +73,7 @@
         @click="feedbackDialog = true"
       >
         <v-icon>
-          mdi-heart
+          mdi-message-text
         </v-icon>
       </v-btn>
       <v-menu offset-y>
@@ -108,7 +109,7 @@
          <v-list-item>
             <v-list-item-content>
               <v-list-item-title> Check </v-list-item-title>
-              <v-list-item-subtitle> Version 1.0.2 </v-list-item-subtitle>
+              <v-list-item-subtitle> Version 1.1.0 </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-divider/>
@@ -120,6 +121,19 @@
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title> Home </v-list-item-title>
+              <v-list-item-subtitle>
+                View Blocs & Their Stats
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item @click="$router.push({ name: 'Spheres' })">
+            <v-list-item-icon>
+              <v-icon>
+               mdi-chart-bubble
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title> Spheres Analyzation </v-list-item-title>
               <v-list-item-subtitle>
                 View Blocs & Their Stats
               </v-list-item-subtitle>
@@ -169,10 +183,15 @@
           alliance out of 100% maximum militatiztion, typically 5 barracks, 5
           factories, 5 hangars, and 3 drydocks. It updates all data every hour.
 
-          <div class="text-h5 mt-5 mb-5 black--text"> Warnings </div>
+          <div class="text-h5 mt-5 black--text"> Warnings </div>
 
           Warnings detect any large changes from the start of the graph to the
           latest point and gives you a small alert icon next to the percent.
+
+          <div class="text-h5 mt-5 mb-5 black--text"> Sphere Analyzation </div>
+
+          In the side menu you can find sphere analyzation that shows you different and helpful graphs
+          for ultra-big-picture analyzation of the state of global affairs.
         </v-card-text>
         <v-card-actions>
           <v-spacer/>
