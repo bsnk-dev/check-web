@@ -243,7 +243,7 @@ export default Vue.extend({
 
   async mounted() {
     store.alliancesData = await (await fetch('/db.json')).json();
-    store.spheres = await (await fetch('/spheres.json')).json();
+    store.spheres = await (await fetch('https://raw.githubusercontent.com/bsnk-dev/check_spheres/main/spheres.json')).json();
 
     this.loaded = true;
   },
