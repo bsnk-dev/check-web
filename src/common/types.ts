@@ -31,7 +31,7 @@ export interface Alliance {
   ships: number;
 
   allDataPoints: {
-    [key: string]: any;
+    [key: string]: number[];
     total: number[];
     soldiers: number[];
     tanks: number[];
