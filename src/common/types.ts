@@ -67,3 +67,8 @@ export interface SphereConfiguration {
   name: string;
   alliances: Array<number>;
 }
+
+export interface BasicAllianceData {
+  id: string;
+  score: number;
+}

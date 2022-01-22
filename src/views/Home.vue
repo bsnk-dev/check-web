@@ -12,7 +12,8 @@
           </div>
           <div :key="idx * 2 + 1" class="alliance-cards-container">
               <alliance-card
-                v-for="(alliance, idx) in sphere.alliances"
+                v-for="(alliance, idx) in filterSetToTopTwenty(sphere.alliances)"
+
                 :key="idx"
                 :alliance-data="alliance"
                 class="alliance-card"
@@ -88,7 +89,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import allianceCard from '@/components/allianceCard.vue';
-import {Database, Sphere, Alliance} from '@/common/types';
+import {Database, Sphere, Alliance, BasicAllianceData} from '@/common/types';
 import Fuse from 'fuse.js';
 import store from '@/store';
 
@@ -114,13 +115,15 @@ export default Vue.extend({
     doneLoading: false,
     fuse: {} as Fuse<Alliance>,
     problemSnackbar: false,
+
+    topNumber: 50,
+    onlyDisplayTop: true,
+    topIDs: [] as string[],
   }),
 
   async mounted() {
     const spheres = store.spheres;
     this.alliancesData = store.alliancesData;
-
-    setTimeout(() => this.doneLoading = true, 100);
 
     const alliancesSorted: Array<Sphere> = [];
     let sphere;
@@ -132,6 +135,9 @@ export default Vue.extend({
     for (alliance of this.alliancesData.alliances) {
       let inSpecificSphere = false;
 
+      // to avoid naming an alliance's spheres twice (e.g. "Alliance 1 & Alliance 1")
+      const skipSphereNaming = Boolean(alliance.sphere);
+
       let sphere;
       for (sphere of spheres) {
         if (sphere.alliances.includes(parseInt(alliance.id))) {
@@ -140,10 +146,12 @@ export default Vue.extend({
           let findSortedSphere;
           for (findSortedSphere of alliancesSorted) {
             if (findSortedSphere.name === sphere.name) {
-              if (alliance.sphere) {
-                alliance.sphere += ' and ' + sphere.name;
-              } else {
-                alliance.sphere = sphere.name;
+              if (!skipSphereNaming) {
+                if (alliance.sphere) {
+                  alliance.sphere += ' and ' + sphere.name;
+                } else {
+                  alliance.sphere = sphere.name;
+                }
               }
 
               findSortedSphere.alliances.push(alliance);
@@ -164,6 +172,29 @@ export default Vue.extend({
     this.fuse = new Fuse(this.alliancesData.alliances, {
       keys: ['name', 'id'],
     });
+
+    this.topIDs = (await this.getTopAlliances()).map(
+        (alliance: BasicAllianceData) => alliance.id,
+    );
+
+    this.doneLoading = true;
+  },
+
+  methods: {
+    async getTopAlliances() {
+      const res = await fetch('https://api-proxy-fv6p52y7540t.runkit.sh/alliances');
+      const data = await res.json();
+
+      return data.sort((a: BasicAllianceData, b: BasicAllianceData) => b.score - a.score).slice(0, this.topNumber);
+    },
+
+    filterSetToTopTwenty(alliances: Alliance[]) {
+      if (this.onlyDisplayTop) {
+        return alliances.filter((alliance: Alliance) => this.topIDs.includes(alliance.id.toString()));
+      } else {
+        return alliances;
+      }
+    },
   },
 
   watch: {
